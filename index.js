@@ -25,7 +25,7 @@ function fetchData() {
   if (rankingButtons[0].checked) {
     ranking = `&ranking=${1}`;
   }
-
+  // same for pantry staples
   let pantry = `&ignorePantry=${true}`;
   const pantryButtons = document.getElementsByName('pantry');
   if (pantryButtons[0].checked) {
@@ -42,7 +42,20 @@ function fetchData() {
 }
 
 function renderData(data) {
-  console.log(data);
+  const section = document.getElementById('results-list');
+  data.forEach((data) => {
+    const article = document.createElement('article');
+    const image = document.createElement('img');
+    image.src = data.image;
+    const link = document.createElement('a');
+    link.href = `https://spoonacular.com/recipes/${data.title.replaceAll(
+      ' ',
+      '-'
+    )}-${data.id}`;
+    image.appendChild(link);
+    article.appendChild(image);
+    section.appendChild(article);
+  });
 }
 
 const form = document.getElementById('recipe-form');

@@ -14,38 +14,41 @@
       </h2>
     </header>
     <main>
-      <form action="index.html" id="recipe-form">
-        <label for="ingredients"
-          >Type all your available ingredients, with a space between
-          each.</label
-        >
-        <input type="text" id="ingredients" />
+      <section>
+        <form action="index.html" id="recipe-form">
+          <label for="ingredients"
+            >Type all your available ingredients, with a space between
+            each.</label
+          >
+          <input type="text" id="ingredients" />
 
-        <label for="number-of-recipes"
-          >How many recipes would you like to see?</label
-        >
-        <select name="number-of-recipes" id="number-of-recipes">
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="25">25</option>
-          <option value="50">50</option>
-        </select>
+          <label for="number-of-recipes"
+            >How many recipes would you like to see?</label
+          >
+          <select name="number-of-recipes" id="number-of-recipes">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+          </select>
 
-        <h3>Which is more important to you?</h3>
-        <label for="ranking-1">Maximize used ingredients</label>
-        <input type="radio" name="ranking" id="ranking-1" value="1" />
-        <label for="ranking-2">Minimize missing ingredients</label>
-        <input type="radio" name="ranking" id="ranking-2" value="2" />
-        <h3>Should we assume you have pantry staples? Flour, sugar, etc.</h3>
-        <label for="pantry-1">What kind of n00b do you take me for?</label>
-        <input type="radio" name="pantry" id="pantry-1" />
-        <label for="pantry-2"
-          >I'm literally camping right now, I ain't got much</label
-        >
-        <input type="radio" name="pantry" id="pantry-2" />
+          <h3>Which is more important to you?</h3>
+          <label for="ranking-1">Maximize used ingredients</label>
+          <input type="radio" name="ranking" id="ranking-1" value="1" />
+          <label for="ranking-2">Minimize missing ingredients</label>
+          <input type="radio" name="ranking" id="ranking-2" value="2" />
+          <h3>Should we assume you have pantry staples? Flour, sugar, etc.</h3>
+          <label for="pantry-1">What kind of n00b do you take me for?</label>
+          <input type="radio" name="pantry" id="pantry-1" />
+          <label for="pantry-2"
+            >I'm literally camping right now, I ain't got much</label
+          >
+          <input type="radio" name="pantry" id="pantry-2" />
+          <input type="submit" />
+        </form>
+      </section>
 
-        <input type="submit" />
-      </form>
+      <section id="results-list"></section>
     </main>
     <script type="text/javascript" src="./config.js"></script>
     <script type="text/javascript" src="./index.js"></script>
