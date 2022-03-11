@@ -45,17 +45,55 @@ function renderData(data) {
   const section = document.getElementById('results-list');
   data.forEach((data) => {
     const article = document.createElement('article');
-    const image = document.createElement('img');
-    image.src = data.image;
+
     const link = document.createElement('a');
     link.href = `https://spoonacular.com/recipes/${data.title.replaceAll(
       ' ',
       '-'
     )}-${data.id}`;
-    image.appendChild(link);
-    article.appendChild(image);
+
+    const image = document.createElement('img');
+    image.src = data.image;
+    link.appendChild(image);
+
+    const recipeName = document.createElement('h3');
+    recipeName.innerText = data.title;
+
+    if (data.missedIngredientCount) {
+      article.appendChild(parseMissedIngredients(data.missedIngredients));
+    }
+
+    article.appendChild(link);
     section.appendChild(article);
   });
+}
+
+function parseMissedIngredients(data) {
+  if (data.length === 1) {
+    const p = document.createElement('p');
+    p.innerText = `You will still need ${data[0].original} for this recipe.`;
+    return p;
+  } else if ((data.length = 2)) {
+    const p = document.createElement('p');
+    p.innerText = `You will still need ${data[0].original} and ${data[1].original} for this recipe.`;
+    return p;
+  } else {
+    const span = document.createElement('span');
+    const ul = document.createElement('ul');
+    data.forEach((el) => {
+      const li = document.createElement('li');
+      li.innerText = el.original;
+      ul.appendChild(li);
+    });
+    const p1 = document.createElement('p');
+    p1.innerText = 'You will still need:';
+    const p2 = document.createElement('p');
+    p2.innerText = 'for this recipe.';
+    span.appendChild(p1);
+    span.appendChild(ul);
+    span.appendChild(p2);
+    return span;
+  }
 }
 
 const form = document.getElementById('recipe-form');
