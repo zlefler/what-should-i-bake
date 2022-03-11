@@ -1,6 +1,6 @@
 const key = config.API_KEY;
 
-function fetchData(e) {
+function fetchData() {
   let ingredients = '&ingredients=';
   const formIngredients = document.getElementById('ingredients').value;
   const ingredientArray = formIngredients.split(' ');
@@ -15,7 +15,10 @@ function fetchData(e) {
     }
   }
 
-  const apiUrl = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${key}${ingredients}&number=2`;
+  const formNumber = document.getElementById('number-of-recipes').value;
+  const number = `&number=${formNumber}`;
+
+  const apiUrl = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${key}${ingredients}${number}`;
   console.log(apiUrl);
   fetch(apiUrl, {
     headers: { 'Content-Type': 'application/json' },
@@ -31,5 +34,5 @@ function renderData(data) {
 const form = document.getElementById('recipe-form');
 form.addEventListener('submit', (e) => {
   e.preventDefault();
-  fetchData(e);
+  fetchData();
 });
