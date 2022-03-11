@@ -24,9 +24,10 @@ function handleClick() {
 function parseIngredients() {
   let ingredients = '&ingredients=';
   const formIngredients = document.getElementById('ingredients').value;
-  const ingredientArray = formIngredients.split(' ');
+  let ingredientArray = formIngredients.split(', ');
 
   for (let i = 0; i < ingredientArray.length; i++) {
+    ingredientArray[i] = ingredientArray[i].replaceAll(' ', '%20');
     if (i === 0) {
       ingredients += `${ingredientArray[0]},`;
     } else if (i === ingredientArray.length - 1) {
@@ -77,6 +78,7 @@ function renderData(data) {
 
     const recipeName = document.createElement('h3');
     recipeName.innerText = data.title;
+    article.appendChild(recipeName);
 
     if (data.missedIngredientCount) {
       article.appendChild(parseMissedIngredients(data.missedIngredients));
