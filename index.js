@@ -1,4 +1,9 @@
-function fetchData() {
+document.getElementById('recipe-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  handleClick();
+});
+
+function handleClick() {
   const key = config.API_KEY;
   const ingredients = parseIngredients();
   const ranking = parseRanking();
@@ -15,12 +20,12 @@ function fetchData() {
     .then((data) => renderData(data));
 }
 
+// appends ingredients to URL with proper syntax
 function parseIngredients() {
   let ingredients = '&ingredients=';
   const formIngredients = document.getElementById('ingredients').value;
   const ingredientArray = formIngredients.split(' ');
 
-  // appends ingredients to URL with proper syntax
   for (let i = 0; i < ingredientArray.length; i++) {
     if (i === 0) {
       ingredients += `${ingredientArray[0]},`;
@@ -54,7 +59,9 @@ function parsePantry() {
 }
 
 function renderData(data) {
-  const section = document.getElementById('results-list');
+  clearSection();
+  const section = document.createElement('section');
+  section.id = 'results-list';
   data.forEach((data) => {
     const article = document.createElement('article');
 
@@ -77,6 +84,8 @@ function renderData(data) {
 
     article.appendChild(link);
     section.appendChild(article);
+    const formSection = document.getElementById('form-section');
+    formSection.after(section);
   });
 }
 
@@ -108,13 +117,14 @@ function parseMissedIngredients(data) {
   }
 }
 
-const form = document.getElementById('recipe-form');
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  fetchData();
-});
-
 const currentYear = new Date().getFullYear();
 const pFooter = document.createElement('p');
 pFooter.innerText = `© ${currentYear} Bakely Industries`;
 document.querySelector('footer').appendChild(pFooter);
+
+function clearSection() {
+  if (document.getElementById('results-list')) {
+    const oldSection = document.getElementById('results-list');
+    oldSection.remove();
+  }
+}
