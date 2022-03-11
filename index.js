@@ -5,6 +5,7 @@ function fetchData() {
   const formIngredients = document.getElementById('ingredients').value;
   const ingredientArray = formIngredients.split(' ');
 
+  // appends ingredients to URL with proper syntax
   for (let i = 0; i < ingredientArray.length; i++) {
     if (i === 0) {
       ingredients += `${ingredientArray[0]},`;
@@ -20,12 +21,18 @@ function fetchData() {
 
   // defaults ranking to 1, but changes it if other option is selected
   let ranking = `&ranking=${2}`;
-  const radioButtons = document.getElementsByName('ranking');
-  if (radioButtons[0].checked) {
+  const rankingButtons = document.getElementsByName('ranking');
+  if (rankingButtons[0].checked) {
     ranking = `&ranking=${1}`;
   }
 
-  const apiUrl = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${key}${ingredients}${number}${ranking}`;
+  let pantry = `&ignorePantry=${true}`;
+  const pantryButtons = document.getElementsByName('pantry');
+  if (pantryButtons[0].checked) {
+    pantry = `&ignorePantry=${false}`;
+  }
+
+  const apiUrl = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${key}${ingredients}${number}${ranking}${pantry}`;
   console.log(apiUrl);
   fetch(apiUrl, {
     headers: { 'Content-Type': 'application/json' },
