@@ -101,3 +101,8 @@ form.addEventListener('submit', (e) => {
   e.preventDefault();
   fetchData();
 });
+
+const currentYear = new Date().getFullYear();
+const pFooter = document.createElement('p');
+pFooter.innerText = `© ${currentYear} Bakely Industries`;
+document.querySelector('footer').appendChild(pFooter);
