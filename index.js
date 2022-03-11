@@ -71,6 +71,7 @@ function renderData(data) {
       ' ',
       '-'
     )}-${data.id}`;
+    link.target = '_blank';
 
     const image = document.createElement('img');
     image.src = data.image;
