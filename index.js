@@ -18,7 +18,14 @@ function fetchData() {
   const formNumber = document.getElementById('number-of-recipes').value;
   const number = `&number=${formNumber}`;
 
-  const apiUrl = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${key}${ingredients}${number}`;
+  // defaults ranking to 1, but changes it if other option is selected
+  let ranking = `&ranking=${2}`;
+  const radioButtons = document.getElementsByName('ranking');
+  if (radioButtons[0].checked) {
+    ranking = `&ranking=${1}`;
+  }
+
+  const apiUrl = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${key}${ingredients}${number}${ranking}`;
   console.log(apiUrl);
   fetch(apiUrl, {
     headers: { 'Content-Type': 'application/json' },
