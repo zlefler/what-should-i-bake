@@ -1,6 +1,21 @@
-const key = config.API_KEY;
-
 function fetchData() {
+  const key = config.API_KEY;
+  const ingredients = parseIngredients();
+  const ranking = parseRanking();
+  const pantry = parsePantry();
+  const formNumber = document.getElementById('number-of-recipes').value;
+  const number = `&number=${formNumber}`;
+
+  const apiUrl = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${key}${ingredients}${number}${ranking}${pantry}`;
+  console.log(apiUrl);
+  fetch(apiUrl, {
+    headers: { 'Content-Type': 'application/json' },
+  })
+    .then((res) => res.json())
+    .then((data) => renderData(data));
+}
+
+function parseIngredients() {
   let ingredients = '&ingredients=';
   const formIngredients = document.getElementById('ingredients').value;
   const ingredientArray = formIngredients.split(' ');
@@ -15,30 +30,27 @@ function fetchData() {
       ingredients += `+${ingredientArray[i]},`;
     }
   }
+  return ingredients;
+}
 
-  const formNumber = document.getElementById('number-of-recipes').value;
-  const number = `&number=${formNumber}`;
-
-  // defaults ranking to 1, but changes it if other option is selected
+// defaults ranking to 1, but changes it if other option is selected
+function parseRanking() {
   let ranking = `&ranking=${2}`;
   const rankingButtons = document.getElementsByName('ranking');
   if (rankingButtons[0].checked) {
     ranking = `&ranking=${1}`;
   }
-  // same for pantry staples
+  return ranking;
+}
+
+// same for pantry staples
+function parsePantry() {
   let pantry = `&ignorePantry=${true}`;
   const pantryButtons = document.getElementsByName('pantry');
   if (pantryButtons[0].checked) {
     pantry = `&ignorePantry=${false}`;
   }
-
-  const apiUrl = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${key}${ingredients}${number}${ranking}${pantry}`;
-  console.log(apiUrl);
-  fetch(apiUrl, {
-    headers: { 'Content-Type': 'application/json' },
-  })
-    .then((res) => res.json())
-    .then((data) => renderData(data));
+  return pantry;
 }
 
 function renderData(data) {
