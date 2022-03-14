@@ -64,29 +64,46 @@ function renderData(data) {
   const section = document.createElement('section');
   section.id = 'results-list';
   data.forEach((data) => {
-    const article = document.createElement('article');
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style = 'width: 20rem';
 
-    const link = document.createElement('a');
-    link.href = `https://spoonacular.com/recipes/${data.title.replaceAll(
-      ' ',
-      '-'
-    )}-${data.id}`;
-    link.target = '_blank';
+    // const link = document.createElement('a');
+    // link.href = `https://spoonacular.com/recipes/${data.title.replaceAll(
+    //   ' ',
+    //   '-'
+    // )}-${data.id}`;
+    // link.target = '_blank';
 
     const image = document.createElement('img');
+    image.className = 'card-img-top';
     image.src = data.image;
-    link.appendChild(image);
+    card.appendChild(image);
+
+    const cardBody = document.createElement('div');
+    cardBody.className = 'card-body mt-2';
 
     const recipeName = document.createElement('h3');
     recipeName.innerText = data.title;
-    article.appendChild(recipeName);
+    recipeName.className = 'card-title';
+    cardBody.appendChild(recipeName);
 
     if (data.missedIngredientCount) {
-      article.appendChild(parseMissedIngredients(data.missedIngredients));
+      cardBody.appendChild(parseMissedIngredients(data.missedIngredients));
     }
 
-    article.appendChild(link);
-    section.appendChild(article);
+    const linkButton = document.createElement('a');
+    linkButton.href = `https://spoonacular.com/recipes/${data.title.replaceAll(
+      ' ',
+      '-'
+    )}-${data.id}`;
+    linkButton.target = '_blank';
+    linkButton.innerText = 'Go To Recipe';
+    linkButton.className = 'btn btn-primary';
+
+    cardBody.appendChild(linkButton);
+    card.appendChild(cardBody);
+    section.appendChild(card);
     const formSection = document.getElementById('form-section');
     formSection.after(section);
   });
@@ -96,10 +113,12 @@ function parseMissedIngredients(data) {
   if (data.length === 1) {
     const p = document.createElement('p');
     p.innerText = `You will still need ${data[0].original} for this recipe.`;
+    p.className = 'card-text';
     return p;
   } else if ((data.length = 2)) {
     const p = document.createElement('p');
     p.innerText = `You will still need ${data[0].original} and ${data[1].original} for this recipe.`;
+    p.className = 'card-text';
     return p;
   } else {
     const span = document.createElement('span');
