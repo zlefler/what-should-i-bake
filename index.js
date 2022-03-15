@@ -68,13 +68,6 @@ function renderData(data) {
     card.className = 'card';
     card.style = 'width: 20rem';
 
-    // const link = document.createElement('a');
-    // link.href = `https://spoonacular.com/recipes/${data.title.replaceAll(
-    //   ' ',
-    //   '-'
-    // )}-${data.id}`;
-    // link.target = '_blank';
-
     const image = document.createElement('img');
     image.className = 'card-img-top';
     image.src = data.image;
