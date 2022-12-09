@@ -1,41 +1,59 @@
-document.getElementById('recipe-form').addEventListener('submit', (e) => {
+document.getElementById('recipe-form')!.addEventListener('submit', (e) => {
   e.preventDefault();
   handleClick();
 });
 
-function handleClick() {
+function handleClick(): void {
   const key = config.API_KEY;
   const ingredients = parseIngredients();
   const ranking = parseRanking();
   const pantry = parsePantry();
-  const formNumber = document.getElementById('number-of-recipes').value;
+  const formNumber = (<HTMLInputElement>document.getElementById('number-of-recipes'))!.value;
   const number = `&number=${formNumber}`;
 
   const apiUrl = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${key}${ingredients}${number}${ranking}${pantry}`;
-  console.log(apiUrl);
-  fetch(apiUrl, {
-    headers: { 'Content-Type': 'application/json' },
-  })
+
+  const counter = document.querySelector('#counter');
+  let x = parseInt(counter!.innerHTML);
+  x += 1;
+  counter!.innerHTML = x.toString();
+
+  fetch(apiUrl)
     .then((res) => res.json())
-    .then((data) => renderData(data));
+    .then((data) => {
+      renderData(data);
+    });
 }
 
 // appends ingredients to URL with proper syntax
 function parseIngredients() {
   let ingredients = '&ingredients=';
-  const formIngredients = document.getElementById('ingredients').value;
+  const formIngredients = (<HTMLInputElement>document.getElementById('ingredients'))!.value;
   let ingredientArray = formIngredients.split(', ');
 
-  for (let i = 0; i < ingredientArray.length; i++) {
-    ingredientArray[i] = ingredientArray[i].replaceAll(' ', '%20');
-    if (i === 0) {
-      ingredients += `${ingredientArray[0]},`;
-    } else if (i === ingredientArray.length - 1) {
-      ingredients += `+${ingredientArray[i]}`;
+  ingredientArray.forEach((ingredient) => {
+    console.log(ingredient);
+    ingredient = ingredient.replaceAll(' ', '%20');
+    if (ingredient === ingredientArray[0]) {
+      ingredients += `${ingredient},`;
+    } else if (ingredient === ingredientArray[-1]) {
+      ingredients += `+${ingredient}`;
     } else {
-      ingredients += `+${ingredientArray[i]},`;
+      ingredients += `+${ingredient},`;
     }
-  }
+  });
+
+  // for (let i = 0; i < ingredientArray.length; i++) {
+  //   ingredientArray[i] = ingredientArray[i].replaceAll(' ', '%20');
+  //   if (i === 0) {
+  //     ingredients += `${ingredientArray[0]},`;
+  //   } else if (i === ingredientArray.length - 1) {
+  //     ingredients += `+${ingredientArray[i]}`;
+  //   } else {
+  //     ingredients += `+${ingredientArray[i]},`;
+  //   }
+  // }
+
   return ingredients;
 }
 
@@ -63,43 +81,45 @@ function renderData(data) {
   clearSection();
   const section = document.createElement('section');
   section.id = 'results-list';
-  data.forEach((data) => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.style = 'width: 20rem';
+  data.forEach(
+    ({ id, image, title, missedIngredients, missedIngredientCount }) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.style = 'width: 20rem';
 
-    const image = document.createElement('img');
-    image.className = 'card-img-top';
-    image.src = data.image;
-    card.appendChild(image);
+      const recipeImage = document.createElement('img');
+      recipeImage.className = 'card-img-top';
+      recipeImage.src = image;
+      card.appendChild(recipeImage);
 
-    const cardBody = document.createElement('div');
-    cardBody.className = 'card-body mt-2';
+      const cardBody = document.createElement('div');
+      cardBody.className = 'card-body mt-2';
 
-    const recipeName = document.createElement('h3');
-    recipeName.innerText = data.title;
-    recipeName.className = 'card-title';
-    cardBody.appendChild(recipeName);
+      const recipeName = document.createElement('h3');
+      recipeName.innerText = title;
+      recipeName.className = 'card-title';
+      cardBody.appendChild(recipeName);
 
-    if (data.missedIngredientCount) {
-      cardBody.appendChild(parseMissedIngredients(data.missedIngredients));
+      if (missedIngredientCount) {
+        cardBody.appendChild(parseMissedIngredients(missedIngredients));
+      }
+
+      const linkButton = document.createElement('a');
+      linkButton.href = `https://spoonacular.com/recipes/${title.replaceAll(
+        ' ',
+        '-'
+      )}-${id}`;
+      linkButton.target = '_blank';
+      linkButton.innerText = 'Go To Recipe';
+      linkButton.className = 'btn btn-primary';
+
+      cardBody.appendChild(linkButton);
+      card.appendChild(cardBody);
+      section.appendChild(card);
+      const formSection = document.getElementById('form-section');
+      formSection.after(section);
     }
-
-    const linkButton = document.createElement('a');
-    linkButton.href = `https://spoonacular.com/recipes/${data.title.replaceAll(
-      ' ',
-      '-'
-    )}-${data.id}`;
-    linkButton.target = '_blank';
-    linkButton.innerText = 'Go To Recipe';
-    linkButton.className = 'btn btn-primary';
-
-    cardBody.appendChild(linkButton);
-    card.appendChild(cardBody);
-    section.appendChild(card);
-    const formSection = document.getElementById('form-section');
-    formSection.after(section);
-  });
+  );
 }
 
 function parseMissedIngredients(data) {
