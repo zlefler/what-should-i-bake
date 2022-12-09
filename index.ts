@@ -61,7 +61,7 @@ function parseIngredients() {
 // defaults ranking to 1, but changes it if other option is selected
 function parseRanking() {
   let ranking = `&ranking=${2}`;
-  const rankingButtons = document.getElementsByName('ranking');
+  const rankingButtons = document.getElementsByName('ranking') as NodeListOf<HTMLInputElement>
   if (rankingButtons[0].checked) {
     ranking = `&ranking=${1}`;
   }
@@ -71,7 +71,7 @@ function parseRanking() {
 // same for pantry staples
 function parsePantry() {
   let pantry = `&ignorePantry=${true}`;
-  const pantryButtons = document.getElementsByName('pantry');
+  const pantryButtons = document.getElementsByName('pantry')  as NodeListOf<HTMLInputElement>
   if (pantryButtons[0].checked) {
     pantry = `&ignorePantry=${false}`;
   }
@@ -86,7 +86,7 @@ function renderData(data) {
     ({ id, image, title, missedIngredients, missedIngredientCount }) => {
       const card = document.createElement('div');
       card.className = 'card';
-      card.style = 'width: 20rem';
+      card.setAttribute('style', 'width: 20rem')
 
       const recipeImage = document.createElement('img');
       recipeImage.className = 'card-img-top';
