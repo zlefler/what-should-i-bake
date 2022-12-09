@@ -5,7 +5,7 @@ document.getElementById('recipe-form')!.addEventListener('submit', (e) => {
 
 
 function handleClick(): void {
-  const key = config.API_KEY;
+  const key: {} = config.API_KEY;
   const ingredients = parseIngredients();
   const ranking = parseRanking();
   const pantry = parsePantry();
@@ -27,10 +27,10 @@ function handleClick(): void {
 }
 
 // appends ingredients to URL with proper syntax
-function parseIngredients() {
-  let ingredients = '&ingredients=';
-  const formIngredients = (<HTMLInputElement>document.getElementById('ingredients'))!.value;
-  let ingredientArray = formIngredients.split(', ');
+function parseIngredients(): string {
+  let ingredients: string = '&ingredients=';
+  const formIngredients: string = (<HTMLInputElement>document.getElementById('ingredients'))!.value;
+  let ingredientArray: string[] = formIngredients.split(', ');
 
   ingredientArray.forEach((ingredient) => {
     console.log(ingredient);
@@ -44,23 +44,12 @@ function parseIngredients() {
     }
   });
 
-  // for (let i = 0; i < ingredientArray.length; i++) {
-  //   ingredientArray[i] = ingredientArray[i].replaceAll(' ', '%20');
-  //   if (i === 0) {
-  //     ingredients += `${ingredientArray[0]},`;
-  //   } else if (i === ingredientArray.length - 1) {
-  //     ingredients += `+${ingredientArray[i]}`;
-  //   } else {
-  //     ingredients += `+${ingredientArray[i]},`;
-  //   }
-  // }
-
   return ingredients;
 }
 
 // defaults ranking to 1, but changes it if other option is selected
-function parseRanking() {
-  let ranking = `&ranking=${2}`;
+function parseRanking(): string {
+  let ranking: string = `&ranking=${2}`;
   const rankingButtons = document.getElementsByName('ranking') as NodeListOf<HTMLInputElement>
   if (rankingButtons[0].checked) {
     ranking = `&ranking=${1}`;
@@ -69,7 +58,7 @@ function parseRanking() {
 }
 
 // same for pantry staples
-function parsePantry() {
+function parsePantry(): string {
   let pantry = `&ignorePantry=${true}`;
   const pantryButtons = document.getElementsByName('pantry')  as NodeListOf<HTMLInputElement>
   if (pantryButtons[0].checked) {
@@ -78,9 +67,9 @@ function parsePantry() {
   return pantry;
 }
 
-function renderData(data) {
+function renderData(data): void {
   clearSection();
-  const section = document.createElement('section');
+  const section: HTMLElement = document.createElement('section');
   section.id = 'results-list';
   data.forEach(
     ({ id, image, title, missedIngredients, missedIngredientCount }) => {
@@ -153,14 +142,14 @@ function parseMissedIngredients(data) {
   }
 }
 
-const currentYear = new Date().getFullYear();
-const pFooter = document.createElement('p');
+const currentYear: number = new Date().getFullYear();
+const pFooter: HTMLParagraphElement = document.createElement('p');
 pFooter.innerText = `© ${currentYear} Bakely Industries`;
 document.querySelector('footer').appendChild(pFooter);
 
-function clearSection() {
+function clearSection(): void {
   if (document.getElementById('results-list')) {
-    const oldSection = document.getElementById('results-list');
+    const oldSection: HTMLElement = document.getElementById('results-list');
     oldSection.remove();
   }
 }
