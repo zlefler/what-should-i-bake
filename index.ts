@@ -67,7 +67,7 @@ function parsePantry(): string {
   return pantry;
 }
 
-function renderData(data): void {
+function renderData(data : [{id: number | string, image: string, title: string, missedIngredients: string, missedIngredientCount: number | string}]): void {
   clearSection();
   const section: HTMLElement = document.createElement('section');
   section.id = 'results-list';
