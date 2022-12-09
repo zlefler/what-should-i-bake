@@ -3,6 +3,7 @@ document.getElementById('recipe-form')!.addEventListener('submit', (e) => {
   handleClick();
 });
 
+// post config file, new errors
 function handleClick(): void {
   const key = config.API_KEY;
   const ingredients = parseIngredients();
